@@ -15,6 +15,8 @@ let basketWidth = ballRadius * 2 + 20;
 let basketStyle = { fillStyle: "#222" };
 let basketTopMargin = ballRadius * 2 + 50;
 let basketBottomMargin = bodyHeight - shotCenter.y + ballRadius + 50;
+let basketNetStyle = { fillStyle: "#222" };
+let basketNetThickness = 2;
 
 let Engine = Matter.Engine,
   Render = Matter.Render,
@@ -97,8 +99,61 @@ let basketLine = Bodies.rectangle(
   basketThickness,
   { isStatic: true, isSensor: true, render: basketStyle }
 );
+let basketNet1 = Bodies.rectangle(
+  (basketRightCircle.parts[0].position.x +
+    basketLeftCircle.parts[0].position.x) /
+    2,
+  basketLeftCircle.parts[0].position.y + basketThickness + 2,
+  basketWidth,
+  basketNetThickness,
+  { isStatic: true, isSensor: true, render: basketNetStyle }
+);
+let basketNet2 = Bodies.rectangle(
+  (basketRightCircle.parts[0].position.x +
+    basketLeftCircle.parts[0].position.x) /
+    2,
+  basketLeftCircle.parts[0].position.y + basketThickness + 17,
+  basketWidth,
+  basketNetThickness,
+  { isStatic: true, isSensor: true, render: basketNetStyle }
+);
+let basketNet3 = Bodies.rectangle(
+  basketLeftCircle.parts[0].position.x,
+  basketLeftCircle.parts[0].position.y + 25,
+  basketNetThickness,
+  50,
+  { isStatic: true, isSensor: true, render: basketNetStyle }
+);
+let basketNet4 = Bodies.rectangle(
+  basketLeftCircle.parts[0].position.x + 20,
+  basketLeftCircle.parts[0].position.y + 25,
+  basketNetThickness,
+  50,
+  { isStatic: true, isSensor: true, render: basketNetStyle }
+);
+let basketNet5 = Bodies.rectangle(
+  basketLeftCircle.parts[0].position.x + 40,
+  basketLeftCircle.parts[0].position.y + 25,
+  basketNetThickness,
+  50,
+  { isStatic: true, isSensor: true, render: basketNetStyle }
+);
+let basketNet6 = Bodies.rectangle(
+  basketLeftCircle.parts[0].position.x + 60,
+  basketLeftCircle.parts[0].position.y + 25,
+  basketNetThickness,
+  50,
+  { isStatic: true, isSensor: true, render: basketNetStyle }
+);
+let basketNet7 = Bodies.rectangle(
+  basketLeftCircle.parts[0].position.x + 80,
+  basketLeftCircle.parts[0].position.y + 25,
+  basketNetThickness,
+  50,
+  { isStatic: true, isSensor: true, render: basketNetStyle }
+);
 
-World.add(world, [ball, basketLeftCircle, basketRightCircle, basketLine, floor]);
+World.add(world, [ball, basketLeftCircle, basketRightCircle, basketLine, basketNet1, basketNet2, basketNet3, basketNet4, basketNet5, basketNet6, basketNet7, floor]);
 
 document.addEventListener("click", function (e) {
   if (Math.sqrt((shotCenter.x - e.x) ** 2 + (shotCenter.y - e.y) ** 2) > 100) {
