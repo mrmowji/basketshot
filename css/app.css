@@ -25,6 +25,7 @@ button {
   height: 120px;
   left: 40px;
   margin-top: 30px;
+  outline: none;
   padding: 4px 2px;
   position: absolute;
   width: 120px;
@@ -44,6 +45,49 @@ h1 {
   width: 100%;
 }
 
+.background-ball {
+  background: #ee6208;
+  border-radius: 50%;
+  bottom: 0;
+  left: 100%;
+  opacity: 1;
+  position: fixed;
+  right: 0;
+  top: -50%;
+  transition: width .5s ease-out, height .5s ease-out,
+    left .5s ease-out, top .5s ease-out;
+  width: 100%;
+  height: 200%;
+  z-index: 2;
+}
+
+.background-ball.dropped {
+  width: 100px;
+  height: 100px;
+  top: 600px;
+  left: 500px;
+}
+
+.goal {
+  background: #ee6208;
+  color: white;
+  margin: 20px auto;
+  padding: 20px 25px;
+  position: fixed;
+}
+
+.goal-title {
+  font-family: "Kaushan Script", cursive;
+  font-size: 55px;
+  padding-right: 25px;
+  text-align: center;
+}
+
+.goal-description {
+  font-size: 15px;
+  text-align: center;
+}
+
 .hidden {
   display: none;
 }
@@ -54,6 +98,7 @@ h1 {
   font-size: 15px;
   font-weight: normal;
   margin: 5px 0 10px 0;
+  padding-top: 2px;
 }
 
 .level, .shots {
@@ -61,17 +106,38 @@ h1 {
   width: 49%;
 }
 
+.level.playing, .shots.playing {
+  bottom: 15px;
+  color: #ee6208;
+  font-size: 15px;
+  left: 30px;
+  position: fixed;
+  text-align: left;
+}
+
+.level.playing {
+  bottom: 35px;
+}
+
 .shots {
   text-align: right;
 }
 
 .menu {
-  background: #ee6208;
+  background: transparent;
   bottom: 0;
   left: 0;
+  opacity: 1;
   position: fixed;
   right: 0;
   top: 0;
+  transition: opacity .5s, visibility .5s; 
+  z-index: 3;
+}
+
+.fade {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .menu-body {

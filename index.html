@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,8 +10,9 @@
   <script src="js/matter.js" defer></script>
   <script src="js/app.js" defer></script>
 </head>
+
 <body>
-  <div class="menu">
+  <div class="menu fade">
     <div class="menu-body">
       <h1>Basket<br>
         Shot</h1>
@@ -19,5 +21,13 @@
       <button type="button" class="play">Play</button>
     </div>
   </div>
+  <div class="goal hidden">
+    <div class="goal-title">GOAL!</div>
+    <div class="goal-description">You're on a next level.</div>
+  </div>
+  <span class="level playing hidden"></span>
+  <span class="shots playing hidden"></span>
+  <div class="background-ball"></div>
 </body>
+
 </html>
