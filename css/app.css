@@ -69,6 +69,7 @@ h1 {
 }
 
 .goal {
+  border: 5px solid white;
   background: #ee6208;
   color: white;
   margin: 20px auto;

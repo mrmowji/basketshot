@@ -277,11 +277,11 @@
             if (level > maxLevel) {
               maxLevel = level;
             }
-            goalElement.style.left =
-              basketRightCircle.parts[0].position.x + 20 + "px";
-            goalElement.style.top =
-              basketRightCircle.parts[0].position.y + "px";
             goalElement.classList.remove("hidden");
+            goalElement.style.left =
+              (bodyWidth - goalElement.offsetWidth) / 2 + "px";
+            goalElement.style.top =
+              (bodyHeight - goalElement.offsetWidth) / 2 + "px";
             isCelebrating = true;
             setTimeout(function () {
               goalElement.classList.add("hidden");
