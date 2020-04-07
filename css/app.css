@@ -23,7 +23,7 @@ button {
   font-size: 30px;
   font-weight: 900;
   height: 120px;
-  left: 90px;
+  left: 40px;
   margin-top: 30px;
   padding: 4px 2px;
   position: absolute;
@@ -36,8 +36,8 @@ h1 {
   font-size: 50px;
   line-height: 1em;
   margin: 0 auto;
-  margin-bottom: -15px;
-  padding: 40px 25px 40px 10px;
+  margin-bottom: 10px;
+  padding: 120px 25px 20px 10px;
   position: relative;
   text-align: center;
   top: -35px;
@@ -46,6 +46,23 @@ h1 {
 
 .hidden {
   display: none;
+}
+
+.hint {
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 15px;
+  font-weight: normal;
+  margin: 5px 0 10px 0;
+}
+
+.level, .shots {
+  display: inline-block;
+  width: 49%;
+}
+
+.shots {
+  text-align: right;
 }
 
 .menu {
@@ -58,19 +75,11 @@ h1 {
 }
 
 .menu-body {
-  border: 5px solid white;
+  border-bottom: 5px solid white;
   color: white;
-  margin: 100px auto;
-  max-width: 300px;
-  padding: 30px 50px 75px 50px;
+  margin: 0px auto 100px auto;
+  max-width: 200px;
+  padding: 30px 0px 95px 0px;
   position: relative;
   width: 90%;
-}
-
-.hint {
-  background: rgba(255, 255, 255, 0.3);
-  font-size: 15px;
-  font-weight: normal;
-  margin: 5px 0 10px 0;
-  padding: 4px 10px;
 }
