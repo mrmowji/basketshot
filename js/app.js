@@ -1,7 +1,8 @@
 "use strict";
 
 (function () {
-  let numberOfShots = localStorage.getItem("numberOfShots") || 10;
+  let initialNumberOfShots = 10;
+  let numberOfShots = localStorage.getItem("numberOfShots") || initialNumberOfShots;
   let level = localStorage.getItem("level") || 1;
   let maxLevel = localStorage.getItem("maxLevel") || 1;
   let isCelebrating = false;
@@ -306,7 +307,7 @@
             backgroundBallElement.style.top = ball.parts[0].position.y + "px";
             document.removeEventListener("click", function () {});
             level = 1;
-            numberOfShots = 5;
+            numberOfShots = initialNumberOfShots;
             showMenu();
           }
         }
@@ -327,11 +328,17 @@
     updateMenuFields();
     setTimeout(function () {
       menuElement.classList.remove("fade");
-    }, 500);
+    }, 400);
   }
 
   function hideMenu() {
     menuElement.classList.add("fade");
+    for (let levelElement of levelElements) {
+      levelElement.classList.remove("hidden");
+    }
+    for (let shotElement of shotsElements) {
+      shotElement.classList.remove("hidden");
+    }
   }
 
   function save() {
