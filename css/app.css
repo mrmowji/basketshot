@@ -4,3 +4,73 @@ html, body {
   padding: 0;
   width: 100%;
 }
+
+* {
+  border: none;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+button {
+  border: 5px solid white;
+  border-radius: 50%;
+  background: #ee6208;
+  bottom: -60px;
+  color: white;
+  display: block;
+  font-size: 30px;
+  font-weight: 900;
+  height: 120px;
+  left: 90px;
+  margin-top: 30px;
+  padding: 4px 2px;
+  position: absolute;
+  width: 120px;
+}
+
+h1 {
+  border: 5px solid white;
+  font-family: "Kaushan Script", cursive;
+  font-size: 50px;
+  line-height: 1em;
+  margin: 0 auto;
+  margin-bottom: -15px;
+  padding: 40px 25px 40px 10px;
+  position: relative;
+  text-align: center;
+  top: -35px;
+  width: 100%;
+}
+
+.hidden {
+  display: none;
+}
+
+.menu {
+  background: #ee6208;
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+}
+
+.menu-body {
+  border: 5px solid white;
+  color: white;
+  margin: 100px auto;
+  max-width: 300px;
+  padding: 30px 50px 75px 50px;
+  position: relative;
+  width: 90%;
+}
+
+.hint {
+  background: rgba(255, 255, 255, 0.3);
+  font-size: 15px;
+  font-weight: normal;
+  margin: 5px 0 10px 0;
+  padding: 4px 10px;
+}
