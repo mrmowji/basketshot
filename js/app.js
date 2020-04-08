@@ -68,6 +68,7 @@
     options: {
       width: bodyWidth,
       height: bodyHeight,
+      pixelRatio: "auto",
       background: "white",
       wireframes: false,
     },
@@ -263,6 +264,10 @@
     });
     World.add(world, mouseConstraint);
     render.mouse = mouse;
+
+    Events.on(mouseConstraint, "mousedown", function(e) {
+      console.log(ball, e);
+    });
 
     Events.on(engine, "collisionStart", function (event) {
       let pairs = event.pairs;
