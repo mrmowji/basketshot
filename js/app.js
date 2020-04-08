@@ -33,10 +33,10 @@
   let wallThickness = 10;
   let wallOptions = {
     isStatic: true,
-    render: { fillStyle: "#084678" },
+    render: { fillStyle: "#777" },
   };
   let ballRadius = 30;
-  let ballStyle = { fillStyle: "#ee6208" };
+  let ballStyle = { fillStyle: "#ec4405" };
   let basketThickness = 20;
   let basketWidth = ballRadius * 2 + 20;
   let basketStyle = { fillStyle: "#222" };
@@ -45,19 +45,19 @@
   let basketNetStyle = { fillStyle: "#222" };
   let basketNetThickness = 2;
 
-  let Engine = Matter.Engine,
-    Render = Matter.Render,
-    Runner = Matter.Runner,
-    Body = Matter.Body,
-    Events = Matter.Events,
-    Composite = Matter.Composite,
-    Composites = Matter.Composites,
-    Common = Matter.Common,
-    Constraint = Matter.Constraint,
-    MouseConstraint = Matter.MouseConstraint,
-    Mouse = Matter.Mouse,
-    World = Matter.World,
-    Bodies = Matter.Bodies;
+  let Engine = Matter.Engine;
+  let Render = Matter.Render;
+  let Runner = Matter.Runner;
+  let Body = Matter.Body;
+  let Events = Matter.Events;
+  let Composite = Matter.Composite;
+  let Composites = Matter.Composites;
+  let Common = Matter.Common;
+  let Constraint = Matter.Constraint;
+  let MouseConstraint = Matter.MouseConstraint;
+  let Mouse = Matter.Mouse;
+  let World = Matter.World;
+  let Bodies = Matter.Bodies;
 
   let engine = Engine.create();
   let world = engine.world;
@@ -73,8 +73,8 @@
       wireframes: false,
     },
   });
-
   Render.run(render);
+
   let runner = Runner.create();
   Runner.run(runner, engine);
 
@@ -83,7 +83,7 @@
     let isOut = true;
     let shotsCounter = 0;
 
-    World.clear(engine.world);
+    World.clear(world);
     Engine.clear(engine);
 
     let ceil = Bodies.rectangle(
@@ -121,6 +121,16 @@
       restitution: 1,
       render: ballStyle,
       density: 0.004,
+    });
+    let elastic = Constraint.create({
+      pointA: shotCenter,
+      bodyB: ball,
+      stiffness: 0.08,
+      render: {
+        anchors: false,
+        type: "line",
+        strokeStyle: "orange",
+      },
     });
     // one of the 2 circles used to capture collision
     let basketLeftCircle = Bodies.circle(
@@ -204,17 +214,6 @@
       50,
       { isStatic: true, isSensor: true, render: basketNetStyle }
     );
-    let elastic = Constraint.create({
-      pointA: shotCenter,
-      bodyB: ball,
-      stiffness: 0.08,
-      render: {
-        anchors: false,
-        type: "line",
-        fillStyle: "black",
-        strokeStyle: "orange",
-      }
-    });
 
     World.add(world, [
       ceil,
@@ -238,10 +237,10 @@
     let isStuckInterval;
 
     Events.on(engine, "afterUpdate", function () {
-      if (
+      let isShot =
         mouseConstraint.mouse.button === -1 &&
-        (calculateDistance(ball.position, shotCenter) > 20)
-      ) {
+        calculateDistance(ball.position, shotCenter) > 20;
+      if (isShot) {
         elastic.render.visible = false;
         elastic.bodyB = null;
         // ball = Bodies.circle(shotCenter.x, shotCenter.y, ballRadius, {
@@ -253,45 +252,18 @@
       }
     });
 
-    // add mouse control
-    var mouse = Mouse.create(render.canvas),
-      mouseConstraint = MouseConstraint.create(engine, {
-        mouse: mouse,
-        constraint: {
-          stiffness: 0.2,
-          render: {
-            visible: false,
-          },
+    let mouse = Mouse.create(render.canvas);
+    let mouseConstraint = MouseConstraint.create(engine, {
+      mouse: mouse,
+      constraint: {
+        stiffness: 0.2,
+        render: {
+          visible: false,
         },
-      });
-
+      },
+    });
     World.add(world, mouseConstraint);
-
-    // keep the mouse in sync with rendering
     render.mouse = mouse;
-
-    /*document.addEventListener("click", function (e) {
-      e.stopPropagation();
-      if (calculateDistance(shotCenter, e) > 100 || !isOut) {
-        console.log("Can't shoot right now!");
-        return;
-      }
-      // shoot
-      Body.setStatic(ball, false);
-      let forceMagnitude = 0.02 * ball.mass;
-      Body.applyForce(ball, ball.position, {
-        x: ((shotCenter.x - e.x) / 10) * forceMagnitude,
-        y: ((shotCenter.y - e.y) / 10) * forceMagnitude,
-      });
-      isOut = false;
-      shotsCounter++;
-      isStuckInterval = setInterval(function () {
-        console.log(ball.speed);
-        if (ball.speed < 0.5) {
-          setOut();
-        }
-      }, 3000);
-    });*/
 
     Events.on(engine, "collisionStart", function (event) {
       let pairs = event.pairs;

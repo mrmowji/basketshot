@@ -16,7 +16,7 @@ html, body {
 button {
   border: 5px solid white;
   border-radius: 50%;
-  background: #ee6208;
+  background: #ec4405;
   bottom: -60px;
   color: white;
   display: block;
@@ -46,7 +46,7 @@ h1 {
 }
 
 .background-ball {
-  background: #ee6208;
+  background: #ec4405;
   border-radius: 50%;
   bottom: 0;
   left: 100%;
@@ -70,7 +70,7 @@ h1 {
 
 .goal {
   border: 5px solid white;
-  background: #ee6208;
+  background: #ec4405;
   color: white;
   margin: 20px auto;
   padding: 20px 25px;
@@ -105,7 +105,7 @@ h1 {
 
 .level.playing, .shots.playing {
   bottom: 15px;
-  color: #ee6208;
+  color: #ec4405;
   font-size: 15px;
   left: 30px;
   position: fixed;
