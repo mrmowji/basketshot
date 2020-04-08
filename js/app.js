@@ -35,15 +35,16 @@
     isStatic: true,
     render: { fillStyle: "#777" },
   };
+  let basketToBallRatio = 1.8848;
   let ballRadius = 30;
   let ballStyle = { fillStyle: "#ec4405" };
-  let basketThickness = 20;
-  let basketWidth = ballRadius * 2 + 20;
+  let basketThickness = 15;
+  let basketWidth = ballRadius * basketToBallRatio * 2;
   let basketStyle = { fillStyle: "#222" };
   let basketTopMargin = ballRadius * 2 + 50;
   let basketBottomMargin = bodyHeight - shotCenter.y + ballRadius + 50;
-  let basketNetStyle = { fillStyle: "#222" };
   let basketNetThickness = 2;
+  let basketNetHeight = 50;
 
   let Engine = Matter.Engine;
   let Render = Matter.Render;
@@ -161,58 +162,27 @@
       basketThickness,
       { isStatic: true, isSensor: true, render: basketStyle }
     );
-    let basketNet1 = Bodies.rectangle(
-      (basketRightCircle.parts[0].position.x +
-        basketLeftCircle.parts[0].position.x) /
-        2,
-      basketLeftCircle.parts[0].position.y + basketThickness + 2,
-      basketWidth,
-      basketNetThickness,
-      { isStatic: true, isSensor: true, render: basketNetStyle }
+    let basketNetVerticalLines = Composites.stack(
+      basketLeftCircle.position.x - basketNetThickness / 2,
+      basketLeftCircle.position.y,
+      7,
+      1,
+      basketWidth / 6 - basketNetThickness,
+      0,
+      function (x, y) {
+        return Bodies.rectangle(x, y, basketNetThickness, basketNetHeight + 20, { isStatic: true, isSensor: true, });
+      }
     );
-    let basketNet2 = Bodies.rectangle(
-      (basketRightCircle.parts[0].position.x +
-        basketLeftCircle.parts[0].position.x) /
-        2,
-      basketLeftCircle.parts[0].position.y + basketThickness + 17,
-      basketWidth,
-      basketNetThickness,
-      { isStatic: true, isSensor: true, render: basketNetStyle }
-    );
-    let basketNet3 = Bodies.rectangle(
-      basketLeftCircle.parts[0].position.x,
-      basketLeftCircle.parts[0].position.y + 25,
-      basketNetThickness,
-      50,
-      { isStatic: true, isSensor: true, render: basketNetStyle }
-    );
-    let basketNet4 = Bodies.rectangle(
-      basketLeftCircle.parts[0].position.x + 20,
-      basketLeftCircle.parts[0].position.y + 25,
-      basketNetThickness,
-      50,
-      { isStatic: true, isSensor: true, render: basketNetStyle }
-    );
-    let basketNet5 = Bodies.rectangle(
-      basketLeftCircle.parts[0].position.x + 40,
-      basketLeftCircle.parts[0].position.y + 25,
-      basketNetThickness,
-      50,
-      { isStatic: true, isSensor: true, render: basketNetStyle }
-    );
-    let basketNet6 = Bodies.rectangle(
-      basketLeftCircle.parts[0].position.x + 60,
-      basketLeftCircle.parts[0].position.y + 25,
-      basketNetThickness,
-      50,
-      { isStatic: true, isSensor: true, render: basketNetStyle }
-    );
-    let basketNet7 = Bodies.rectangle(
-      basketLeftCircle.parts[0].position.x + 80,
-      basketLeftCircle.parts[0].position.y + 25,
-      basketNetThickness,
-      50,
-      { isStatic: true, isSensor: true, render: basketNetStyle }
+    let basketNetHorizonralLines = Composites.stack(
+      basketLeftCircle.position.x,
+      basketLeftCircle.position.y + 5,
+      1,
+      4,
+      0,
+      basketNetHeight / 3 - basketNetThickness,
+      function (x, y) {
+        return Bodies.rectangle(x, y, basketWidth, basketNetThickness, { isStatic: true, isSensor: true, });
+      }
     );
 
     World.add(world, [
@@ -225,30 +195,40 @@
       basketLeftCircle,
       basketRightCircle,
       basketBar,
-      basketNet1,
-      basketNet2,
-      basketNet3,
-      basketNet4,
-      basketNet5,
-      basketNet6,
-      basketNet7,
+      basketNetVerticalLines,
+      basketNetHorizonralLines,
     ]);
+
+    let numberOfObstacles = Math.min(Math.floor(level / 1), 10);
+    let obstacleMaxWidth = Math.min(bodyWidth / 20, 200);
+    let obstacleMaxHeight = Math.min(bodyHeight / 20, 200);
+    for (let i = 0; i < numberOfObstacles; i++) {
+      let obstacle = Bodies.rectangle(
+        generateRandomFloat(
+          wallThickness,
+          bodyWidth
+        ),
+        generateRandomFloat(
+          wallThickness,
+          bodyHeight
+        ),
+        generateRandomFloat(50, obstacleMaxWidth),
+        generateRandomFloat(50, obstacleMaxHeight),
+        { isStatic: true, render: { fillStyle: "#777" } }
+      );
+      World.add(world, obstacle);
+    }
+
 
     let isStuckInterval;
 
     Events.on(engine, "afterUpdate", function () {
       let isShot =
         mouseConstraint.mouse.button === -1 &&
-        calculateDistance(ball.position, shotCenter) > 20;
+        calculateDistance(ball.position, shotCenter) > 10;
       if (isShot) {
         elastic.render.visible = false;
         elastic.bodyB = null;
-        // ball = Bodies.circle(shotCenter.x, shotCenter.y, ballRadius, {
-        //   restitution: 1,
-        //   render: ballStyle,
-        // });
-        // World.add(engine.world, ball);
-        // elastic.bodyB = ball;
       }
     });
 
@@ -265,7 +245,7 @@
     World.add(world, mouseConstraint);
     render.mouse = mouse;
 
-    Events.on(mouseConstraint, "mousedown", function(e) {
+    Events.on(mouseConstraint, "mousedown", function (e) {
       console.log(ball, e);
     });
 
@@ -344,11 +324,6 @@
           Body.setStatic(ball, true);
           Body.setStatic(ball, false);
           Body.setPosition(ball, shotCenter);
-          /*ball = Bodies.circle(shotCenter.x, shotCenter.y, ballRadius, {
-            restitution: 1,
-            render: ballStyle,
-          });
-          World.add(engine.world, ball);*/
           elastic.bodyB = ball;
           elastic.render.visible = true;
         }
