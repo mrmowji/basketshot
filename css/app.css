@@ -110,6 +110,7 @@ h1 {
   left: 30px;
   position: fixed;
   text-align: left;
+  width: auto;
 }
 
 .level.playing {

@@ -109,7 +109,7 @@
     );
     let floor = Bodies.rectangle(
       bodyWidth / 2,
-      bodyHeight + wallThickness / 2 + ballRadius * 2,
+      bodyHeight + wallThickness / 2,
       bodyWidth,
       wallThickness,
       {
@@ -118,9 +118,9 @@
       }
     );
     let ball = Bodies.circle(shotCenter.x, shotCenter.y, ballRadius, {
+      isStatic: true,
       restitution: 1,
       render: ballStyle,
-      density: 0.004,
     });
     // one of the 2 circles used to capture collision
     let basketLeftCircle = Bodies.circle(
@@ -204,17 +204,6 @@
       50,
       { isStatic: true, isSensor: true, render: basketNetStyle }
     );
-    let elastic = Constraint.create({
-      pointA: shotCenter,
-      bodyB: ball,
-      stiffness: 0.08,
-      render: {
-        anchors: false,
-        type: "line",
-        fillStyle: "black",
-        strokeStyle: "orange",
-      }
-    });
 
     World.add(world, [
       ceil,
@@ -222,7 +211,6 @@
       rightWall,
       floor,
       ball,
-      elastic,
       basketLeftCircle,
       basketRightCircle,
       basketBar,
@@ -237,40 +225,7 @@
 
     let isStuckInterval;
 
-    Events.on(engine, "afterUpdate", function () {
-      if (
-        mouseConstraint.mouse.button === -1 &&
-        (calculateDistance(ball.position, shotCenter) > 20)
-      ) {
-        elastic.render.visible = false;
-        elastic.bodyB = null;
-        // ball = Bodies.circle(shotCenter.x, shotCenter.y, ballRadius, {
-        //   restitution: 1,
-        //   render: ballStyle,
-        // });
-        // World.add(engine.world, ball);
-        // elastic.bodyB = ball;
-      }
-    });
-
-    // add mouse control
-    var mouse = Mouse.create(render.canvas),
-      mouseConstraint = MouseConstraint.create(engine, {
-        mouse: mouse,
-        constraint: {
-          stiffness: 0.2,
-          render: {
-            visible: false,
-          },
-        },
-      });
-
-    World.add(world, mouseConstraint);
-
-    // keep the mouse in sync with rendering
-    render.mouse = mouse;
-
-    /*document.addEventListener("click", function (e) {
+    document.addEventListener("click", function (e) {
       e.stopPropagation();
       if (calculateDistance(shotCenter, e) > 100 || !isOut) {
         console.log("Can't shoot right now!");
@@ -291,7 +246,7 @@
           setOut();
         }
       }, 3000);
-    });*/
+    });
 
     Events.on(engine, "collisionStart", function (event) {
       let pairs = event.pairs;
@@ -327,7 +282,7 @@
             setGoal();
           }
           isOnTopOfBasket = false;
-        } else if (hitFloor && elastic.bodyB === null) {
+        } else if (hitFloor) {
           setOut();
         }
         updateMenuFields();
@@ -364,17 +319,9 @@
         numberOfShots--;
       }
       if (numberOfShots > 0) {
-        if (!isCelebrating && elastic.bodyB === null) {
+        if (!isCelebrating) {
           Body.setStatic(ball, true);
-          Body.setStatic(ball, false);
           Body.setPosition(ball, shotCenter);
-          /*ball = Bodies.circle(shotCenter.x, shotCenter.y, ballRadius, {
-            restitution: 1,
-            render: ballStyle,
-          });
-          World.add(engine.world, ball);*/
-          elastic.bodyB = ball;
-          elastic.render.visible = true;
         }
       } else {
         backgroundBallElement.style.left = ball.parts[0].position.x + "px";
