@@ -68,7 +68,6 @@
     options: {
       width: bodyWidth,
       height: bodyHeight,
-      pixelRatio: window.devicePixelRatio,
       background: "white",
       wireframes: false,
     },
